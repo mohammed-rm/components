@@ -7,24 +7,22 @@ interface AnimatedNumberProps {
   locale?: string;
 }
 
-const AnimatedNumber: React.FC<AnimatedNumberProps> = React.memo(
-  ({ value, locale = "en-US" }) => {
-    let spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 });
-    let display = useTransform(spring, (current) =>
-      Math.round(current).toLocaleString(locale),
-    );
+function AnimatedNumber({ value }: { value: number }) {
+  let spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 });
+  let display = useTransform(spring, (current) =>
+    Math.round(current).toLocaleString("en-US"),
+  );
 
-    useEffect(() => {
-      spring.set(value);
-    }, [spring, value]);
+  useEffect(() => {
+    spring.set(value);
+  }, [spring, value]);
 
-    return (
-      <motion.span className="font-bold text-5xl text-gray-50">
-        {display}
-      </motion.span>
-    );
-  },
-);
+  return (
+    <motion.span className="font-bold text-5xl text-gray-50">
+      {display}
+    </motion.span>
+  );
+}
 
 export default function AnimatedNumberPage() {
   let [value, setValue] = useState(1000);
